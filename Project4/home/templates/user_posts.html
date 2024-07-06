@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-10" style="display: flex; justify-content: center;">Posts By {{view.kwargs.username}} ({{page_obj.paginator.count}})</h1>
+{% for post in posts %}
+<div class="page-content page-container" id="page-content">
+    <!-- <div class="padding"> -->
+        <!-- <div class="row container d-flex justify-content-center"> -->
+            <div style="display: flex; justify-content: center;align-items: center;">
+                <div class="col-md-6">
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <div class="user-block"> <img class="img-circle"
+                                src="{{post.author.profile.image.url}}" alt="User Image"> <span
+                                class="username"><a href="{% url 'user-posts' post.author.username %}"
+                                    data-abc="true">{{post.author}}</a></span> <span class="description">Public
+                                {{post.date_posted|date:'F d Y f a'}}</span>
+                        </div>
+
+                        <div class="box-tools">
+                            <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title=""
+                                data-original-title="Mark as read">
+                                <i class="fa fa-circle-o"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i> </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body"> <img class="img-responsive pad" src="https://i.imgur.com/EAQkLS1.jpg"
+                            alt="Photo">
+                        <p><a href="{% url 'post-detail' post.id %}">{{post.title}}</a> <br>
+                            <small>{{post.content}}</small>
+                        </p>
+
+                        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i>
+                            Like</button> <span class="pull-right text-muted">127 likes - 3 comments</span>
+                    </div>
+                    <!-- <div class="box-footer box-comments">
+                        <div class="box-comment"> <img class="img-circle img-sm"
+                                src="https://img.icons8.com/office/36/000000/person-female.png" alt="User Image">
+                            <div class="comment-text"> <span class="username"> Tina Domiaz <span
+                                        class="text-muted pull-right">8:03 PM Today</span> </span> For what reason would
+                                it be advisable for me to think about business content? </div>
+                        </div>
+                        <div class="box-comment"> <img class="img-circle img-sm"
+                                src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="User Image">
+                            <div class="comment-text"> <span class="username"> Smith helm <span
+                                        class="text-muted pull-right">8:03 PM Today</span> </span>
+                                That might be little bit risky to have crew member like them. </div>
+                        </div>
+                    </div> -->
+                    <div class="box-footer">
+                        <form action="#" method="post"> <img class="img-responsive img-circle img-sm"
+                                src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="Alt Text">
+                            <div class="img-push"> <input type="text" class="form-control input-sm"
+                                    placeholder="Press enter to post comment"> </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    <!-- </div> -->
+</div>
+
+{% endfor %}
+<div style="display: flex; justify-content: center;">
+{% if is_paginated %}
+    {% if page_obj.has_previous %}
+    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{page_obj.previous_page_number}}">Previous</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a class="btn btn-outline-info mb-4" href="?page={{page_obj.next_page_number}}">Next</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}
